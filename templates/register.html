@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Create Account - Premium Auth</title>
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="background-blur">
+        <div class="blur-circle-1"></div>
+        <div class="blur-circle-2"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="auth-container">
+        <div class="auth-wrapper">
+
+            <!-- Auth Card -->
+            <div class="auth-card">
+                <!-- Header -->
+                <div class="auth-header">
+                    <h1 class="auth-title">Create Account</h1>
+                    <p class="auth-subtitle">
+                        Join us today and get started.
+                        <br>
+                        Already have an account? <a href="{% url 'login' %}">Sign in</a>
+                    </p>
+                </div>
+
+                <!-- Registration Form -->
+                <form class="auth-form" id="registerForm" method="POST" action="{% url 'register' %}">
+                    {% csrf_token %}
+
+    
+                    <!-- Email Field -->
+                    <div class="form-group">
+                        <label class="form-label" for="id_email">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="id_email" 
+                            name="email" 
+                            class="form-input" 
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            value="{{ form.email.value|default:'' }}"
+                            required
+                        >
+                        <!-- Targets specific duplicate email format/existence errors -->
+                        <div class="form-error {% if form.email.errors %}show{% endif %}" id="emailError">
+                            {% for error in form.email.errors %}
+                                <p class="error-text">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="form-group">
+                        <label class="form-label" for="id_password1">Password</label>
+                        <input 
+                            type="password" 
+                            id="id_password1" 
+                            name="password" 
+                            class="form-input" 
+                            placeholder="At least 8 characters"
+                            autocomplete="new-password"
+                            required
+                        >
+                        <!-- Targets password strength or structure requirements -->
+                        <div class="form-error {% if form.password.errors %}show{% endif %}" id="password1Error">
+                            {% for error in form.password.errors %}
+                                <p class="error-text">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <div id="passwordRequirements" style="margin-top: 8px; font-size: 12px; color: var(--text-secondary);">
+                            <div id="requirement-length" style="margin-bottom: 4px;">✗ At least 8 characters</div>
+                            <div id="requirement-uppercase" style="margin-bottom: 4px;">✗ One uppercase letter</div>
+                            <div id="requirement-lowercase" style="margin-bottom: 4px;">✗ One lowercase letter</div>
+                            <div id="requirement-number" style="margin-bottom: 4px;">✗ One number</div>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password Field -->
+                    <div class="form-group">
+                        <label class="form-label" for="id_password2">Confirm Password</label>
+                        <input 
+                            type="password" 
+                            id="id_password2" 
+                            name="confirm_password" 
+                            class="form-input" 
+                            placeholder="Confirm your password"
+                            autocomplete="new-password"
+                            required
+                        >
+                        <!-- Targets missing confirm password fields -->
+                        <div class="form-error {% if form.confirm_password.errors %}show{% endif %}" id="password2Error">
+                            {% for error in form.confirm_password.errors %}
+                                <p class="error-text">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Terms & Conditions -->
+                    <div class="form-checkbox-group">
+                        <input 
+                            type="checkbox" 
+                            id="agreeTerms" 
+                            name="agree_terms" 
+                            class="form-checkbox"
+                            required
+                        >
+                        <label class="form-checkbox-label" for="agreeTerms">
+                            I agree to the <a href="#" target="_blank">Terms & Conditions</a> and <a href="#" target="_blank">Privacy Policy</a>
+                        </label>
+                    </div> 
+
+                    <!-- Non-field Errors (e.g., Mismatched Passwords from forms.py clean method) -->
+                    <div class="form-error {% if form.non_field_errors %}show{% endif %}" id="nonFieldError">
+                        {% for error in form.non_field_errors %}
+                            <p class="error-text">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        Create Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Validation and Interaction Script -->
+    <script src="{% static 'js/register.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+### basicc js for home page opportunities 
+
+
+const internships = [
+    ['Software Engineering Intern', 'MongoDB', 'Bangalore, India', 'Hybrid', 'Python, C++, SQL, Git', 'M'], ['Backend Engineering Intern', 'GitLab', 'Remote · India', 'Remote', 'Ruby, Go, REST APIs, Git', 'G'], ['Product Security Intern', 'Cloudflare', 'Hyderabad, India', 'Hybrid', 'Python, Linux, Security, HTTP', 'C'], ['Data Engineering Intern', 'Datadog', 'Mumbai, India', 'On-site', 'Java, Kafka, SQL, AWS', 'D'], ['Software Development Intern', 'Paytm', 'Noida, India', 'On-site', 'Java, Spring, React, MySQL', 'P'], ['Founding Engineer Intern', 'Drivetrain', 'Bangalore, India', 'Hybrid', 'Python, Django, React, Postgres', 'D'], ['Full Stack Engineering Intern', 'Hevo Data', 'Pune, India', 'Hybrid', 'Node.js, React, TypeScript, AWS', 'H'], ['Frontend Engineering Intern', '100ms', 'Remote · India', 'Remote', 'React, JavaScript, WebRTC, CSS', '1']
+];
+
+
+const cards = document.querySelector('#cards');
+const company = document.querySelector('#company');
+const search = document.querySelector('#search');
+const locationFilter = document.querySelector('#location');
+const workType = document.querySelector('#workType');
+const count = document.querySelector('#resultCount'); 
+const empty = document.querySelector('#emptyState');
+
+
+[...new Set(internships.map(item => item[1]))].forEach(name => company.insertAdjacentHTML('beforeend', `<option>${name}</option>`));
+function render() { const query = search.value.toLowerCase(); const filtered = internships.filter(item => (`${item[0]} ${item[1]} ${item[4]}`).toLowerCase().includes(query) && (!company.value || item[1] === company.value) && (!locationFilter.value || item[2].includes(locationFilter.value)) && (!workType.value || item[3] === workType.value)); count.textContent = filtered.length; empty.hidden = filtered.length > 0; cards.innerHTML = filtered.map((item, index) => `<article class="card"><div class="card-head"><div class="logo">${item[5]}</div><div><h2>${item[0]}</h2><p class="card-company">${item[1]}</p></div><span class="source">${index % 2 ? 'Lever' : 'Greenhouse'}</span></div><div class="meta"><span>⌖ ${item[2]}</span><span>◷ ${index % 2 ? 'Summer internship' : 'Intern / Co-op'}</span><span>▣ Engineering</span><span>◉ ${item[3]}</span></div><p class="description">Work with a talented team to build meaningful products while learning modern development practices.</p><div class="skills">${item[4].split(', ').map(skill => `<span>${skill}</span>`).join('')}</div><div class="card-footer"><span class="posted">Posted ${index + 2} days ago</span><button class="save-button" onclick="this.classList.toggle('saved');this.textContent=this.classList.contains('saved')?'Saved':'Save'">Save</button><button class="review-button">Reviews</button><button class="apply-button" onclick="this.textContent='Applied';this.style.background='#176c50'">Apply now</button></div></article>`).join('') }
+[search, company, locationFilter, workType].forEach(control => control.addEventListener('input', render)); document.querySelector('#clearButton').addEventListener('click', () => { search.value = ''; company.value = ''; locationFilter.value = ''; workType.value = ''; render() }); document.querySelector('#searchButton').addEventListener('click', render); document.querySelector('#menuButton').addEventListener('click', () => document.querySelector('#nav').classList.toggle('open')); render();
+
+from api.services.internship_sync import *
+>>>
+c = sync_lever_company("drivetrain","DriveTrain")
+
+https://boards-api.greenhouse.io/v1/boards/mongodb/jobs
+
+https://boards-api.greenhouse.io/v1/boards/mogodb/jobs/3271444
+           

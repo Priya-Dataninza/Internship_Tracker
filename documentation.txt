@@ -1,0 +1,47 @@
+Here is a comprehensive documentation summary of your custom Django REST Framework (DRF) Simple JWT + Token Version Security Architecture. You can save this as a reference (README.md or internal docs) to recall exactly how your authentication pipeline protects your application.🛡️ Dual-Layer JWT Security Architecture DocumentationThis authentication layout balances user experience with advanced data security. It implements a Stateless-to-Stateful Hybrid JWT Pipeline featuring 15-Minute Token Rotation Chains and a Remote Database Kill-Switch (token_version).🏗️ 1. Core Architectural LayoutThe system divides responsibilities between two independent security frameworks to cover both access token leaks and refresh token hijacking:Framework Component MatrixComponentResponsibilityTech Stack LayerCustomUser ModelStores core user properties. Switches login to Email while keeping Username strictly for user profiles [1bf7]. Houses the token_version tracking integer column.Django Database LayerSimple JWT Rotation & BlacklistManages short access windows (15 min) and active session longevity (7 days). Forces refresh tokens to cycle out on every use, leaving an automated reuse trap [1bf7].Django REST Framework (token_blacklist app)TokenVersionMiddlewareIntercepts requests to /api/ endpoints. Validates that the token's internal version matches the live database row value in real-time. Acts as a Remote Session Nuke.Django Server MiddlewareSecureTokenRefreshViewActs as an Automated Data-Breach Tripwire. Catches token reuse collisions instantly and forces database versions to advance.Django API View LayersecureFetch ScriptOperates as a local browser clock wrapper. Intercepts outgoing client requests, checks expiration dates locally, and manages Silent Refreshes [1bf7].Frontend Client-Side JavaScript🔄 2. The Normal Lifecycle Flow (No Breach)During daily operation, a legitimate user never experiences interruption. The token_version remains unchanged at its default integer value (e.g., 1):text[ Browser Context ]                                             [ Django Backend Server ]
+        │                                                                │
+        ├────── 1. Client submits Email & Plain Password ───────────────>│ (Checks cryptohash match)
+        │                                                                │
+        │<───── 2. Returns signed JWT Pair (Access & Refresh) ───────────┤ (Bakes token_version: 1 inside)
+        │
+        ├────── [15 Minutes Elapse - Access Token Expired]
+        │
+        ├────── 3. secureFetch intercepts request locally
+        │          Packages 7-day Refresh Token into JSON string payload
+        │
+        ├────── 4. Dispatches POST to /api/token/refresh/ ──────────────>│ (Checks Blacklist table -> Clean)
+        │                                                                │ (Rotates keys -> Invalidates old ID)
+        │<───── 5. Sends back brand-new rotated Access & Refresh Pair ───┤ (Bakes token_version: 1 inside again)
+        │
+        ├────── 6. Overwrites localStorage with fresh rotated keys
+        │          Original API data request completes seamlessly
+Use code with caution.🚨 3. The Breach Containment Mechanics (Thief Trap)If an external thief clones or steals a user's tokens, a race condition occurs. Whether the user or the thief attempts a silent refresh first, Django's database structure blocks them both cleanly:text               ┌───────── Thief Refreshes First ────────┐          ┌──────── User Refreshes First ────────┐
+               │                                        │          │                                      │
+               ▼                                        ▼          ▼                                      ▼
+     Thief submits token A                    User submits token A        User submits token A             Thief submits token A
+               │                                        │                  │                                       │
+      Django processes it                      Django detects reuse       Django processes it             Django detects reuse
+               │                                        │                  │                                       │
+     Rotates token to B                       Triggers InvalidToken       Rotates token to B              Triggers InvalidToken
+               │                                        │                  │                                       │
+    Blacklists original A                               ▼                  │                                       ▼
+               │                            Bumps token_version to 2       │                           Bumps token_version to 2
+               │                                        │                  │                                       │
+               │                                        ▼                  │                                       ▼
+               │                               Bricks Thief's Access       │                             Bricks Thief's Access
+               │                                        │                  │                                       │
+               ▼                                        ▼                  ▼                                       ▼
+   Thief attempts to use B                    Thief is Locked Out       Thief attempts to use A          Thief is Locked Out
+               │
+      Middleware catches it
+  (Token has version 1, DB has 2)
+               │
+               ▼
+      Thief is Locked Out
+Use code with caution.🧠 4. Golden Rules to Keep in MindKeep these conceptual invariants in mind whenever you add new endpoints or forms to your Django project:Local Storage is a Local Clock: The frontend JavaScript reads the Access Token to monitor the time, but it uses the Refresh Token as the actual currency passed to the backend server to purchase a new token chain.Natural Expiration != Fraud: If a user closes their browser for 2 weeks, their refresh token expires naturally over time (TokenError). This does not trigger the security alarm or alter token_version. It simply pushes them to the login screen safely.The InvalidToken Exception is Sacred: The custom view code inside except InvalidToken: only triggers if the system attempts to process an identical token string that has already been registered in the database blacklist. This represents an explicit data reuse signature.The Border Guard Rule: You do not need to hunt down the hacker's computer or wipe their memory storage fields. By incrementing user.token_version on your backend server, you change the lock at the server border. Any access token they have—even if it has 14 minutes left—becomes structurally dead.Would you like me to generate a Django unit test script so you can run a mock token theft simulation in your development terminal and watch this entire architecture execute live? Let me know how you'd like to test it!
+
+
+
+
+
+Defensive Security: Moving tokens to HttpOnly Cookies proves you actively code against OWASP Top 10 vulnerabilities like Cross-Site Scripting (XSS).Asynchronous Architecture: Moving your sync loop to Celery + Redis proves you understand how to keep a web server ultra-responsive by offloading heavy work to background workers.High-Scale Performance: Integrating Redis Cache proves you know how to save database CPU cycles and minimize API latency when a site gets hit with high traffic.

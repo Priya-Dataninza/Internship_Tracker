@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Internship Tracker</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                    </svg>
+                    Internship Tracker
+                </div>
+                <h1>Welcome Back</h1>
+                <p class="auth-subtitle">Login to continue your internship journey</p>
+
+                {% if messages %}
+                <div class="auth-messages">
+                    {% for message in messages %}
+                    <div class="message message-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <form id="login-form">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                    <div class="form-non-field-errors">{{ form.non_field_errors }}</div>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label for="id_username">{{ form.username.label }}</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}<ul class="form-error">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_password">{{ form.password.label }}</label>
+                        <div class="password-toggle-wrap">
+                            {{ form.password }}
+                            <button type="button" class="password-toggle" aria-label="Toggle password">Show</button>
+                        </div>
+                        {% if form.password.errors %}<ul class="form-error">{% for e in form.password.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        {{ form.remember_me }}
+                        <label for="{{ form.remember_me.id_for_label }}" class="checkbox-label">{{ form.remember_me.label }}</label>
+                        {% if form.remember_me.errors %}<ul class="form-error">{% for e in form.remember_me.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary auth-submit">Login</button>
+                </form>
+
+                <div class="auth-footer">
+                    <p><a href="#">Forgot password?</a></p>
+                    <p>Don't have an account? <a href="{% url 'register' %}">Create Account</a></p>
+                    <p style="margin-top:0.5rem;"><a href="#">Back to Home</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const apiLoginUrl = "{% url 'api_login' %}";
+    const dashboardUrl = "{% url 'dashboard' %}";
+</script>
+    <script src="{% static 'js/login.js' %}"></script>
+</body>
+</html>

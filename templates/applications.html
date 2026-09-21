@@ -1,0 +1,359 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#06080d">
+
+    <title>My Applications - Internship Tracker</title>
+
+    <link rel="stylesheet" href="{% static 'css/applications.css' %}">
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="topbar">
+
+        <a href="/" class="brand">
+            <span class="brand-mark">i</span>
+
+            <span>
+                Internship<span class="brand-muted">Tracker</span>
+            </span>
+        </a>
+
+        <button
+            class="menu-button"
+            id="menuButton"
+            aria-label="Toggle navigation"
+        >
+            ☰
+        </button>
+
+        <nav id="nav" aria-label="Main navigation">
+
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+
+            <a href="{% url 'opportunities' %}">
+                Opportunities
+            </a>
+
+            <a href="{% url 'applications' %}" class="active">
+                My Applications
+            </a>
+
+            <a href="{% url 'profile' %}">
+                Profile
+            </a>
+
+        </nav>
+
+        <button class="profile-button">
+
+            <span class="avatar">
+                PS
+            </span>
+
+            <span class="profile-name">
+                Priya Sheoran
+            </span>
+
+            <span>⌄</span>
+
+        </button>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="page-content">
+
+        <!-- Page heading -->
+
+        <section class="page-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    <span></span>
+                    YOUR CAREER JOURNEY
+                </p>
+
+                <h1>
+                    My Applications
+                </h1>
+
+                <p class="page-description">
+                    Track and manage all the internships you have applied for.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= STATISTICS ================= -->
+
+        <section class="application-stats">
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    A
+                </div>
+
+                <div>
+                    <p>Total Applications</p>
+                    <h2 id="totalApplications">0</h2>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    I
+                </div>
+
+                <div>
+                    <p>Interviews</p>
+                    <h2 id="interviewCount">0</h2>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    O
+                </div>
+
+                <div>
+                    <p>Offers</p>
+                    <h2 id="offerCount">0</h2>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    R
+                </div>
+
+                <div>
+                    <p>Rejected</p>
+                    <h2 id="rejectedCount">0</h2>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= FILTER BAR ================= -->
+
+        <section class="filter-panel">
+
+            <div class="search-wrapper">
+
+                <span class="search-icon">
+                    ⌕
+                </span>
+
+                <input
+                    type="search"
+                    id="applicationSearch"
+                    placeholder="Search applications or companies..."
+                >
+
+            </div>
+
+
+            <select id="statusFilter">
+
+                <option value="">
+                    All statuses
+                </option>
+
+                <option value="applied">
+                    Applied
+                </option>
+
+                <option value="online_assessment">
+                    Online Assessment
+                </option>
+
+                <option value="interview">
+                    Interview
+                </option>
+
+                <option value="technical_interview">
+                    Technical Interview
+                </option>
+
+                <option value="hr_interview">
+                    HR Interview
+                </option>
+
+                <option value="offer">
+                    Offer
+                </option>
+
+                <option value="accepted">
+                    Accepted
+                </option>
+
+                <option value="rejected">
+                    Rejected
+                </option>
+
+                <option value="withdrawn">
+                    Withdrawn
+                </option>
+
+            </select>
+
+
+            <button
+                class="clear-button"
+                id="clearFilters"
+            >
+                Clear
+            </button>
+
+        </section>
+
+
+        <!-- ================= RESULTS HEADER ================= -->
+
+        <div class="results-header">
+
+            <div>
+
+                <h2>
+                    Applications
+                </h2>
+
+                <p>
+                    <span id="resultCount">0</span>
+                    applications found
+                </p>
+
+            </div>
+
+            <select id="sortApplications">
+
+                <option value="newest">
+                    Most recent
+                </option>
+
+                <option value="oldest">
+                    Oldest first
+                </option>
+
+                <option value="company">
+                    Company A–Z
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- ================= APPLICATION LIST ================= -->
+
+        <section
+            class="applications-list"
+            id="applicationsList"
+        >
+        </section>
+
+
+        <!-- ================= EMPTY STATE ================= -->
+
+        <section
+            class="empty-state"
+            id="emptyState"
+            hidden
+        >
+
+            <div class="empty-icon">
+                ✓
+            </div>
+
+            <h3>
+                No applications found
+            </h3>
+
+            <p>
+                You haven't tracked any applications matching your filters.
+            </p>
+
+            <a
+                href="/opportunities/"
+                class="primary-button"
+            >
+                Explore Opportunities
+            </a>
+
+        </section>
+
+
+        <!-- ================= LOADING ================= -->
+
+        <section
+            class="loading-state"
+            id="loadingState"
+        >
+
+            <div class="loading-card"></div>
+            <div class="loading-card"></div>
+            <div class="loading-card"></div>
+
+        </section>
+
+
+        <!-- ================= ERROR ================= -->
+
+        <section
+            class="error-state"
+            id="errorState"
+            hidden
+        >
+
+            <h3>
+                Unable to load applications
+            </h3>
+
+            <p>
+                Something went wrong while loading your applications.
+            </p>
+
+            <button
+                class="primary-button"
+                id="retryButton"
+            >
+                Retry
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <script src="{% static 'js/applications.js' %}"></script>
+
+</body>
+
+</html>

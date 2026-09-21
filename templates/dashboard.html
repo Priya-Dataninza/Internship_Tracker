@@ -1,0 +1,770 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - Internship Tracker</title>
+
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="navbar-left">
+            <a href="{% url 'dashboard' %}" class="brand">
+                Internship Tracker
+            </a>
+        </div>
+
+
+        <div class="navbar-right">
+
+            <a href="{% url 'dashboard' %}" class="nav-link active">
+                Dashboard
+            </a>
+
+            <a href="{% url 'applications' %}" class="nav-link">
+                Applications
+            </a>
+
+            <a href="#" class="nav-link">
+                Internships
+            </a>
+
+            <a href="{% url 'profile' %}" class="nav-link">
+                Profile
+            </a>
+
+            <button type="button" id="logoutBtn" class="logout-btn">
+                Logout
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="dashboard-container">
+
+
+        <!-- ================= WELCOME SECTION ================= -->
+
+        <section class="welcome-section">
+
+            <div class="welcome-content">
+
+                <span class="welcome-label">
+                    YOUR DASHBOARD
+                </span>
+
+                <h1>
+                    Welcome back,
+                    <span id="userName">there</span> 👋
+                </h1>
+
+                <p>
+                    Keep track of your internship applications,
+                    interviews, and opportunities in one place.
+                </p>
+
+                <div class="welcome-actions">
+
+                    <a
+                        href="#"
+                        class="primary-btn"
+                        id="browseInternshipsBtn"
+                    >
+                        Browse Internships
+                    </a>
+
+                    <a
+                        href="{% url 'applications' %}"
+                        class="secondary-btn"
+                    >
+                        View Applications
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROFILE COMPLETION -->
+
+            <div class="profile-completion-card">
+
+                <div class="completion-header">
+
+                    <div>
+                        <span class="small-label">
+                            PROFILE
+                        </span>
+
+                        <h3>
+                            Profile Strength
+                        </h3>
+                    </div>
+
+                    <span
+                        id="profilePercentage"
+                        class="completion-number"
+                    >
+                        0%
+                    </span>
+
+                </div>
+
+
+                <div class="completion-track">
+
+                    <div
+                        id="profileProgress"
+                        class="completion-progress"
+                        style="width: 0%;"
+                    ></div>
+
+                </div>
+
+
+                <p id="profileCompletionMessage">
+                    Complete your profile to improve your internship chances.
+                </p>
+
+
+                <a href="{% url 'profile' %}" class="completion-link">
+                    Complete Profile →
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= STATISTICS ================= -->
+
+        <section class="stats-grid">
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <div class="stat-icon applications-icon">
+                        📄
+                    </div>
+
+                    <span class="stat-trend">
+                        TRACKED
+                    </span>
+
+                </div>
+
+                <div class="stat-number" id="applicationsCount">
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Total Applications
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <div class="stat-icon interview-icon">
+                        🎯
+                    </div>
+
+                    <span class="stat-trend">
+                        UPCOMING
+                    </span>
+
+                </div>
+
+                <div class="stat-number" id="interviewsCount">
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Interviews
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <div class="stat-icon offer-icon">
+                        🏆
+                    </div>
+
+                    <span class="stat-trend">
+                        RECEIVED
+                    </span>
+
+                </div>
+
+                <div class="stat-number" id="offersCount">
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Offers
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <div class="stat-icon rejected-icon">
+                        ↩
+                    </div>
+
+                    <span class="stat-trend">
+                        CLOSED
+                    </span>
+
+                </div>
+
+                <div class="stat-number" id="rejectedCount">
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Rejected
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= APPLICATION PIPELINE ================= -->
+
+        <section class="section-block">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="section-label">
+                        APPLICATION TRACKER
+                    </span>
+
+                    <h2>
+                        Your Application Pipeline
+                    </h2>
+                </div>
+
+                <a
+                    href="{% url 'applications' %}"
+                    class="section-link"
+                >
+                    View all →
+                </a>
+
+            </div>
+
+
+            <div class="pipeline-grid">
+
+
+                <div class="pipeline-card">
+
+                    <div class="pipeline-top">
+                        <span class="pipeline-dot applied"></span>
+                        Applied
+                    </div>
+
+                    <strong id="pipelineApplied">
+                        0
+                    </strong>
+
+                    <span>
+                        applications
+                    </span>
+
+                </div>
+
+
+                <div class="pipeline-card">
+
+                    <div class="pipeline-top">
+                        <span class="pipeline-dot assessment"></span>
+                        Assessment
+                    </div>
+
+                    <strong id="pipelineAssessment">
+                        0
+                    </strong>
+
+                    <span>
+                        applications
+                    </span>
+
+                </div>
+
+
+                <div class="pipeline-card">
+
+                    <div class="pipeline-top">
+                        <span class="pipeline-dot interview"></span>
+                        Interview
+                    </div>
+
+                    <strong id="pipelineInterview">
+                        0
+                    </strong>
+
+                    <span>
+                        applications
+                    </span>
+
+                </div>
+
+
+                <div class="pipeline-card">
+
+                    <div class="pipeline-top">
+                        <span class="pipeline-dot offer"></span>
+                        Offer
+                    </div>
+
+                    <strong id="pipelineOffer">
+                        0
+                    </strong>
+
+                    <span>
+                        applications
+                    </span>
+
+                </div>
+
+
+                <div class="pipeline-card">
+
+                    <div class="pipeline-top">
+                        <span class="pipeline-dot rejected"></span>
+                        Rejected
+                    </div>
+
+                    <strong id="pipelineRejected">
+                        0
+                    </strong>
+
+                    <span>
+                        applications
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= TWO COLUMN AREA ================= -->
+
+        <section class="dashboard-columns">
+
+
+            <!-- ================= UPCOMING INTERVIEWS ================= -->
+
+            <div class="dashboard-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <span class="section-label">
+                            NEXT STEPS
+                        </span>
+
+                        <h2>
+                            Upcoming Interviews
+                        </h2>
+                    </div>
+
+                    <a
+                        href="{% url 'applications' %}"
+                        class="panel-link"
+                    >
+                        View all
+                    </a>
+
+                </div>
+
+
+                <div
+                    id="upcomingInterviews"
+                    class="interviews-list"
+                >
+
+                    <!-- JS will populate this -->
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            🎯
+                        </div>
+
+                        <h3>
+                            No upcoming interviews
+                        </h3>
+
+                        <p>
+                            Your scheduled interviews will appear here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= QUICK ACTIONS ================= -->
+
+            <div class="dashboard-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <span class="section-label">
+                            SHORTCUTS
+                        </span>
+
+                        <h2>
+                            Quick Actions
+                        </h2>
+                    </div>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+
+                    <a
+                        href="#"
+                        class="quick-action"
+                        id="findInternshipsBtn"
+                    >
+
+                        <div class="quick-icon">
+                            🔎
+                        </div>
+
+                        <div>
+                            <strong>
+                                Find Internships
+                            </strong>
+
+                            <span>
+                                Discover new opportunities
+                            </span>
+                        </div>
+
+                        <span class="arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'applications' %}"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-icon">
+                            📋
+                        </div>
+
+                        <div>
+                            <strong>
+                                Track Application
+                            </strong>
+
+                            <span>
+                                Update your application status
+                            </span>
+                        </div>
+
+                        <span class="arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'profile' %}"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-icon">
+                            👤
+                        </div>
+
+                        <div>
+                            <strong>
+                                Update Profile
+                            </strong>
+
+                            <span>
+                                Keep your details up to date
+                            </span>
+                        </div>
+
+                        <span class="arrow">
+                            →
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'profile' %}"
+                        class="quick-action"
+                    >
+
+                        <div class="quick-icon">
+                            📄
+                        </div>
+
+                        <div>
+                            <strong>
+                                Manage Resume
+                            </strong>
+
+                            <span>
+                                Update your resume
+                            </span>
+                        </div>
+
+                        <span class="arrow">
+                            →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= RECENT APPLICATIONS ================= -->
+
+        <section class="section-block">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        RECENT ACTIVITY
+                    </span>
+
+                    <h2>
+                        Recent Applications
+                    </h2>
+
+                </div>
+
+                <a
+                    href="{% url 'applications' %}"
+                    class="section-link"
+                >
+                    View all →
+                </a>
+
+            </div>
+
+
+            <div class="applications-table-wrapper">
+
+                <table class="applications-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Internship
+                            </th>
+
+                            <th>
+                                Company
+                            </th>
+
+                            <th>
+                                Type
+                            </th>
+
+                            <th>
+                                Applied
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="recentApplications">
+
+                        <!-- JS will populate this -->
+
+                        <tr>
+
+                            <td colspan="5">
+
+                                <div class="table-empty-state">
+
+                                    <span>
+                                        📋
+                                    </span>
+
+                                    <div>
+                                        <strong>
+                                            No applications yet
+                                        </strong>
+
+                                        <p>
+                                            Start tracking your internship applications here.
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= RECOMMENDED INTERNSHIPS ================= -->
+
+        <section class="section-block">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        OPPORTUNITIES
+                    </span>
+
+                    <h2>
+                        Recommended Internships
+                    </h2>
+
+                    <p class="section-description">
+                        Explore opportunities that match your profile and interests.
+                    </p>
+
+                </div>
+
+                <a
+                    href="#"
+                    class="section-link"
+                    id="viewInternshipsBtn"
+                >
+                    Explore all →
+                </a>
+
+            </div>
+
+
+            <div
+                id="recommendedInternships"
+                class="internship-grid"
+            >
+
+                <!-- JS will populate internship cards -->
+
+                <div class="internship-placeholder">
+
+                    <div class="placeholder-icon">
+                        💼
+                    </div>
+
+                    <h3>
+                        Discover internships
+                    </h3>
+
+                    <p>
+                        Internship opportunities will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <p>
+            © {% now "Y" %} Internship Tracker. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <!-- ================= API URLS ================= -->
+
+    <script>
+
+        const dashboardApiUrl = "{% url 'dashboard-api' %}";
+        const logoutApiUrl = "{% url 'api_logout' %}";
+        const loginUrl = "{% url 'login' %}";
+
+        // Replace this later with your internships page URL.
+        const internshipsUrl = "#";
+
+    </script>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script src="{% static 'js/dashboard.js' %}"></script>
+
+</body>
+</html>
+

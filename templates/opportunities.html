@@ -1,0 +1,42 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#05070d" />
+    <title>Internships</title>
+    <link rel="stylesheet" href='{% static "css/opportunities.css" %}' />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top"><span class="brand-mark">i</span><span>Internship<span class="brand-muted">Tracker</span></span></a>
+      <button class="menu-button" id="menuButton" aria-label="Toggle navigation">☰</button>
+      <nav id="nav" aria-label="Main navigation"><a href="{% url 'dashboard' %}">Dashboard</a> </nav>
+      <button class="profile-button"><span class="avatar">PS</span><span class="profile-name">Priya Sheoran</span><span>⌄</span></button>
+    </header>
+
+    <main id="top" class="page-content">
+      <section class="hero" id="opportunities">
+        <div><p class="eyebrow"><span></span> Curated for you</p><h1>Internship Opportunities</h1><p class="hero-copy">Discover internships from companies hiring through trusted job platforms.</p></div>
+        <div class="hero-meta"><strong>▣ 8 Companies</strong><span><i></i> Updated recently</span></div>
+      </section>
+
+      <section class="search-panel" aria-label="Search opportunities">
+        <label class="search-field"><span>⌕</span><input id="search" type="search" placeholder="Search internships, companies, or skills..." /></label>
+        <select id="location" aria-label="Filter by location"><option value="">All locations</option><option>Remote</option><option>Bangalore</option><option>Hyderabad</option><option>Mumbai</option></select>
+        <select id="workType" aria-label="Filter by work type"><option value="">Work type</option><option>Remote</option><option>Hybrid</option><option>On-site</option></select>
+        <select id="company" aria-label="Filter by company"><option value="">All companies</option></select>
+        <button class="primary-button" id="searchButton">Search</button><button class="clear-button" id="clearButton">Clear</button>
+      </section>
+
+      <div class="results-row"><p><strong id="resultCount">8</strong> opportunities found</p><button class="sort-button">Most recent ⌄</button></div>
+      <section class="card-grid" id="cards"></section>
+      <p class="empty-state" id="emptyState" hidden>No internships found. Try changing your filters.</p>
+    </main>
+    <script>
+      const logoutUrl = "{% url 'api_logout' %}";
+    </script>
+    <script src='{% static "js/opportunities.js" %}'></script>
+  </body>
+</html>

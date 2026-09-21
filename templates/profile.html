@@ -1,0 +1,569 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile - Internship Tracker</title>
+
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="navbar-left">
+            <a href="{% url 'dashboard' %}" class="brand">
+                Internship Tracker
+            </a>
+        </div>
+
+        <div class="navbar-right">
+
+            <a href="{% url 'dashboard' %}" class="nav-link">
+                Dashboard
+            </a>
+
+            <a href="{% url 'profile' %}" class="nav-link active">
+                Profile
+            </a>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="profile-container">
+
+        <!-- Page heading -->
+
+        <div class="page-heading">
+
+            <div>
+                <h1>My Profile</h1>
+                <p>Manage your personal information and career details.</p>
+            </div>
+
+            <a href="#" class="edit-profile-btn" id="editProfileBtn">
+                Edit Profile
+            </a>
+
+        </div>
+
+
+        <!-- ================= PROFILE HEADER ================= -->
+
+        <section class="profile-header card">
+
+            <div class="profile-image-section">
+
+                <!-- JS will replace/populate this image -->
+
+                <img
+                    src="{% static 'images/default-profile.png' %}"
+                    alt="Profile Picture"
+                    class="profile-image"
+                    id="profileImage"
+                >
+
+            </div>
+
+
+            <div class="profile-main-info">
+
+                <!-- Filled by profile.js -->
+                <h2>Your Name</h2>
+
+                <!-- Filled by profile.js -->
+                <p class="profile-email">
+                    Loading...
+                </p>
+
+                <!-- Filled by profile.js -->
+                <p class="profile-bio muted">
+                    Loading profile information...
+                </p>
+
+            </div>
+
+
+            <div class="profile-status">
+
+                <span class="status-label">
+                    Profile
+                </span>
+
+                <span class="status-value">
+                    Active
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= PROFILE COMPLETION ================= -->
+
+        <section class="card completion-card">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Profile Completion</h2>
+
+                    <p>
+                        Complete your profile to make it more useful
+                        for internship applications.
+                    </p>
+                </div>
+
+                <span
+                    class="completion-percentage"
+                    id="completionPercentage"
+                >
+                    0%
+                </span>
+
+            </div>
+
+
+            <div class="progress-container">
+
+                <div
+                    class="progress-bar"
+                    id="profileProgress"
+                    style="width: 0%;"
+                ></div>
+
+            </div>
+
+
+            <p
+                class="completion-message"
+                id="completionMessage"
+            >
+                Complete your profile information.
+            </p>
+
+        </section>
+
+
+        <!-- ================= STATISTICS ================= -->
+
+        <section class="statistics-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📄
+                </div>
+
+                <div>
+
+                    <span
+                        class="stat-number"
+                        id="applicationsCount"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        Applications
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🎯
+                </div>
+
+                <div>
+
+                    <span
+                        class="stat-number"
+                        id="interviewsCount"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        Interviews
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🏆
+                </div>
+
+                <div>
+
+                    <span
+                        class="stat-number"
+                        id="offersCount"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        Offers
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ↩
+                </div>
+
+                <div>
+
+                    <span
+                        class="stat-number"
+                        id="rejectedCount"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        Rejected
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= INFORMATION GRID ================= -->
+
+        <div class="profile-grid">
+
+
+            <!-- ================= PERSONAL INFORMATION ================= -->
+
+            <section class="card">
+
+                <div class="section-header">
+                    <h2>Personal Information</h2>
+                </div>
+
+
+                <div class="information-list">
+
+                    <div class="information-item">
+
+                        <span class="information-label">
+                            Full Name
+                        </span>
+
+                        <span
+                            class="information-value"
+                            id="fullName"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="information-item">
+
+                        <span class="information-label">
+                            Email
+                        </span>
+
+                        <span
+                            class="information-value"
+                            id="email"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="information-item">
+
+                        <span class="information-label">
+                            Phone
+                        </span>
+
+                        <span class="information-value">
+                            —
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= EDUCATION ================= -->
+
+            <section class="card">
+
+                <div class="section-header">
+                    <h2>Education</h2>
+                </div>
+
+
+                <div class="information-list">
+
+                    <div class="information-item">
+
+                        <span class="information-label">
+                            College
+                        </span>
+
+                        <span class="information-value">
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="information-item">
+
+                        <span class="information-label">
+                            Degree
+                        </span>
+
+                        <span class="information-value">
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="information-item">
+
+                        <span class="information-label">
+                            Branch
+                        </span>
+
+                        <span class="information-value">
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="information-item">
+
+                        <span class="information-label">
+                            Graduation Year
+                        </span>
+
+                        <span class="information-value">
+                            —
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= SOCIAL LINKS ================= -->
+
+            <section class="card">
+
+                <div class="section-header">
+                    <h2>Social & Professional Links</h2>
+                </div>
+
+
+                <div class="social-links">
+
+                    <!-- LinkedIn -->
+
+                    <a
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="social-link"
+                    >
+                        <span class="social-icon">
+                            in
+                        </span>
+
+                        <span>
+                            LinkedIn
+                        </span>
+
+                        <span class="external-icon">
+                            ↗
+                        </span>
+                    </a>
+
+
+                    <!-- GitHub -->
+
+                    <a
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="social-link"
+                    >
+                        <span class="social-icon">
+                            GH
+                        </span>
+
+                        <span>
+                            GitHub
+                        </span>
+
+                        <span class="external-icon">
+                            ↗
+                        </span>
+                    </a>
+
+
+                    <!-- Portfolio -->
+
+                    <a
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="social-link"
+                    >
+                        <span class="social-icon">
+                            ↗
+                        </span>
+
+                        <span>
+                            Portfolio
+                        </span>
+
+                        <span class="external-icon">
+                            ↗
+                        </span>
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= RESUME ================= -->
+
+            <section class="card">
+
+                <div class="section-header">
+                    <h2>Resume</h2>
+                </div>
+
+
+                <div class="resume-box">
+
+                    <div class="resume-icon">
+                        📄
+                    </div>
+
+
+                    <div class="resume-info">
+
+                        <strong>
+                            Resume
+                        </strong>
+
+                        <span>
+                            No resume uploaded yet.
+                        </span>
+
+                    </div>
+
+
+                    <div class="resume-actions">
+
+                        <a
+                            href="#"
+                            target="_blank"
+                            class="resume-btn secondary"
+                            style="display: none;"
+                        >
+                            View
+                        </a>
+
+                        <a
+                            href="#"
+                            download
+                            class="resume-btn primary"
+                            style="display: none;"
+                        >
+                            Download
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <p>
+            © {% now "Y" %} Internship Tracker. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <!-- ================= API URLS ================= -->
+
+    <script>
+
+        const profileApiUrl = "{% url 'profile-api' %}";
+
+        const loginUrl = "{% url 'login' %}";
+        
+        const editProfileUrl = "#";
+
+    </script>
+
+
+    <!-- ================= PROFILE JAVASCRIPT ================= -->
+
+    <script src="{% static 'js/profile.js' %}"></script>
+
+</body>
+
+</html>
+
